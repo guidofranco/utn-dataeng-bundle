@@ -2,7 +2,7 @@ name: Deploy DAB
 
 on:
   push:
-    branches: [prod, develop]
+    branches: [prod, dev]
   workflow_dispatch:
 
 jobs:
