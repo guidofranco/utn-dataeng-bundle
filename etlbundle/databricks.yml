@@ -8,18 +8,14 @@ targets:
   dev:
     mode: development
     workspace:
-      root_path: 
+      root_path: /Workspace/.bundle/${bundle.name}/dev/${workspace.current_user.userName}
     
   prod:
     mode: production
     workspace:
       root_path: /Workspace/.bundle/${bundle.name}/prod
-    run_as:
-      service_principal_name: ${var.sp_prod}
+#    run_as:
+#      service_principal_name: ${var.sp_prod}
 
 include:
   - resources/*.yml
-
-variables:
-  sp_prod:
-    description: "Service principal for prod"

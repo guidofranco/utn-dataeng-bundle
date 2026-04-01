@@ -1,0 +1,48 @@
+resources:
+  jobs:
+    etl_pipeline:
+      name: "ETL Pipeline - ${bundle.target}"
+      tasks:
+        - task_key: for
+          for_each_task:
+            inputs: '["ordenes", "equipos"]'
+            concurrency: 3
+            task:
+              task_key: for_iteration
+              notebook_task:
+                notebook_path: ${workspace.file_path}/notebooks/00_extr_carga_param
+                base_parameters:
+                  dataset: "{{input}}"
+                source: WORKSPACE
+        
+        - task_key: equipos_silver
+          depends_on:
+            - task_key: for
+          notebook_task:
+            notebook_path: ${workspace.file_path}/notebooks/01_equipos_silver
+            source: WORKSPACE
+        
+        - task_key: ordenes_silver
+          depends_on:
+            - task_key: for
+          notebook_task:
+            notebook_path: ${workspace.file_path}/notebooks/01_ordenes_silver
+            source: WORKSPACE
+        
+        - task_key: ordenes_enriched
+          depends_on:
+            - task_key: equipos_silver
+            - task_key: ordenes_silver
+          notebook_task:
+            notebook_path: ${workspace.file_path}/notebooks/02_gold
+            source: WORKSPACE
+        
+        - task_key: ordenes_metrics
+          depends_on:
+            - task_key: ordenes_enriched
+          notebook_task:
+            notebook_path: ${workspace.file_path}/notebooks/02_gold_metrics
+            source: WORKSPACE
+      
+      queue:
+        enabled: true
