@@ -1,0 +1,25 @@
+bundle:
+  name: utn-spark-etl
+
+workspace:
+  host: https://dbc-c39d31c2-c8c2.cloud.databricks.com
+
+targets:
+  dev:
+    mode: development
+    workspace:
+      root_path: 
+    
+  prod:
+    mode: production
+    workspace:
+      root_path: /Workspace/.bundle/${bundle.name}/prod
+    run_as:
+      service_principal_name: ${var.sp_prod}
+
+include:
+  - resources/*.yml
+
+variables:
+  sp_prod:
+    description: "Service principal for prod"
