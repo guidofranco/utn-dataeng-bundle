@@ -2,7 +2,7 @@ name: Deploy DAB
 
 on:
   push:
-    branches: [main, develop]
+    branches: [prod, dev]
   workflow_dispatch:
 
 jobs:
@@ -19,7 +19,7 @@ jobs:
       - name: Set target
         id: target
         run: |
-          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+          if [[ "${{ github.ref }}" == "refs/heads/prod" ]]; then
             echo "target=prod" >> $GITHUB_OUTPUT
           else
             echo "target=dev" >> $GITHUB_OUTPUT
