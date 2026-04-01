@@ -8,7 +8,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+    defaults:
+      run:
+        working-directory: ./etlbundle  # Ejecuta comandos desde aquí    
     steps:
       - uses: actions/checkout@v3
       
